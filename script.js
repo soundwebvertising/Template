@@ -6,13 +6,13 @@ const newQuoteBtn = document.getElementById('new-quote')
 const loader = document.getElementById('loader')
 
 // Show loading Spinner
-function loading() {
+function showLoadingSpinner() {
   loader.hidden = false;
   quoteContainer.hidden = true;
 }
 
 // Hide Loading Spinner
-function complete() {
+function removeLoadingSpinner() {
   if(!loader.hidden){
     quoteContainer.hidden = false;
     loader.hidden = true;
@@ -25,7 +25,7 @@ async function getQuote() {
   //const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en?format=json';
   const apiUrl = 'https://type.fit/api/quotes/?method=getQuote&lang=en?format=json';
   try {
-    loading()
+    showLoadingSpinner()
   
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -47,24 +47,22 @@ async function getQuote() {
     } else {
       quoteText.classList.add('long-quote');
     }
-    quoteText.innerText = data[number].text;
-    console.log(quote);
-    // Stop Loader, Show Quote
-    complete();
+      quoteText.innerText = data[number].text;
+      console.log(quote);
+      // Stop Loader, Show Quote
+      removeLoadingSpinner();
   } catch (error) {
-    getQuote();
+    alert("Warning Will Robinson! There is an error, no quote!");
     console.log('Whoops, no quote', error);
   }
 }
 
-// tweet quote
-function tweetQuote() {
-  //https://twitter.com/intent/follow
+// Tweet Quote
+function tweetQuote(){
   const quote = quoteText.innerText;
   const author = authorText.innerText;
-  const twitterUrl = 'https://twitter.com/intent/tweet?text=${quote} - ${author}';
-
-  //window.open(twitterUrl, '_blank');
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
+  window.open(twitterUrl, '_blank');
 }
 
 
