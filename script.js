@@ -3,6 +3,21 @@ const quoteText = document.getElementById('quote')
 const authorText = document.getElementById('author')
 const twitterBtn = document.getElementById('twitter')
 const newQuoteBtn = document.getElementById('new-quote')
+const loader = document.getElementById('loader')
+
+// Show loading Spinner
+function loading() {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+}
+
+// Hide Loading Spinner
+function complete() {
+  if(!loader.hidden){
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+  }
+}
 
 // Get Quote from API http://api.forismatic.com/api/1.0/ or use https://type.fit/api/quotes
 async function getQuote() {
@@ -10,6 +25,8 @@ async function getQuote() {
   //const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en?format=json';
   const apiUrl = 'https://type.fit/api/quotes/?method=getQuote&lang=en?format=json';
   try {
+    loading()
+  
     const response = await fetch(apiUrl);
     const data = await response.json();
     let number = Math.floor(Math.random() * data.length);
@@ -32,6 +49,8 @@ async function getQuote() {
     }
     quoteText.innerText = data[number].text;
     console.log(quote);
+    // Stop Loader, Show Quote
+    complete();
   } catch (error) {
     getQuote();
     console.log('Whoops, no quote', error);
@@ -45,11 +64,10 @@ function tweetQuote() {
   const author = authorText.innerText;
   const twitterUrl = 'https://twitter.com/intent/tweet?text=${quote} - ${author}';
 
-  window.open(twitterUrl, '_blank');
-
-  
-
+  //window.open(twitterUrl, '_blank');
 }
+
+
 
 //Event Listeners
 newQuoteBtn.addEventListener('click', getQuote);
