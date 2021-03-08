@@ -19,15 +19,15 @@ function removeLoadingSpinner() {
   }
 }
 
-// Get Quote from API http://api.forismatic.com/api/1.0/ or use https://type.fit/api/quotes
+// Get Quote from API http://api.forismatic.com/api/1.0/ or use https://type.fit/api/quotes to avoid cors error without using the proxy
 async function getQuote() {
-  //const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+  const proxyUrl = 'https://fast-taiga-63597.herokuapp.com/'
   //const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en?format=json';
   const apiUrl = 'https://type.fit/api/quotes/?method=getQuote&lang=en?format=json';
   try {
     showLoadingSpinner()
   
-    const response = await fetch(apiUrl);
+    const response = await fetch(proxyUrl + apiUrl);
     const data = await response.json();
     let number = Math.floor(Math.random() * data.length);
     let quote;
